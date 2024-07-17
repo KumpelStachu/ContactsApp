@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace api.Models
 {
+    /// <summary>
+    /// Represents a contact category.
+    /// </summary>
     public class ContactCategory
     {
         [Required]
@@ -18,6 +21,9 @@ namespace api.Models
         }
     }
 
+    /// <summary>
+    /// Represents a contact category type.
+    /// </summary>
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum CategoryType
     {

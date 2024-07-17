@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api.Models
 {
+    /// <summary>
+    /// Represents a contact category to be created.
+    /// </summary>
     public class CreateContactCategoryDTO
     {
         [Required(AllowEmptyStrings = true)]

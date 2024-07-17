@@ -8,11 +8,24 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace api.Services
 {
+    /// <summary>
+    /// Service for authentication.
+    /// </summary>
+    /// <remarks>
+    /// This class contains methods for logging in and registering users.
+    /// </remarks>
     public class AuthService(IConfiguration configuration, ContactService contactService)
     {
         private readonly IConfiguration _configuration = configuration;
         private readonly ContactService _contactService = contactService;
 
+        /// <summary>
+        /// Logs in a user.
+        /// </summary>
+        /// <param name="loginDTO">The login data.</param>
+        /// <returns>A tuple containing the token and the user.</returns>
+        /// <exception cref="KeyNotFoundException">Thrown when the user is not found.</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when the password is incorrect.</exception>
         public async Task<(string Token, ContactDTO User)> Login(LoginDTO loginDTO)
         {
             var user = await _contactService.GetContact(loginDTO.Email) ?? throw new KeyNotFoundException();
@@ -25,12 +38,23 @@ namespace api.Services
             return (GenerateToken(user), user.ToContactDto());
         }
 
+        /// <summary>
+        /// Registers a user.
+        /// </summary>
+        /// <param name="registerDTO">The registration data.</param>
+        /// <returns>A tuple containing the token and the user.</returns>
+        /// <exception cref="DBConcurrencyException">Thrown when the user already exists.</exception>
         public async Task<(string Token, ContactDTO User)> Register(RegisterDTO registerDTO)
         {
             var user = await _contactService.CreateUser(registerDTO);
             return (GenerateToken(user), user.ToContactDto());
         }
 
+        /// <summary>
+        /// Generates a token for a user.
+        /// </summary>
+        /// <param name="user">The user to generate the token for.</param>
+        /// <returns>The generated token.</returns>
         private string GenerateToken(Contact user)
         {
             var bearer = _configuration.GetSection("Authentication:Bearer");

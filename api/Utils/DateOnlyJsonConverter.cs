@@ -4,6 +4,12 @@ using System.Text.Json.Serialization;
 
 namespace api.Utils
 {
+    /// <summary>
+    /// Json converter for DateOnly objects.
+    /// </summary>
+    /// <remarks>
+    /// This class is used to serialize and deserialize DateOnly objects.
+    /// </remarks>
     public class DateOnlyJsonConverter : JsonConverter<DateOnly>
     {
         private const string DateFormat = "yyyy-MM-dd";

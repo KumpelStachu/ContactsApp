@@ -3,10 +3,7 @@ using api.Models;
 using api.Services;
 using System.Data;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using api.Mappers;
-using NuGet.Protocol;
-using System.Text.Json;
 
 namespace api.Controllers
 {

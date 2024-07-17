@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api.Models
 {
+    /// <summary>
+    /// Represents the request to authenticate a user.
+    /// </summary>
     public class LoginDTO
     {
         [Required(AllowEmptyStrings = true)]

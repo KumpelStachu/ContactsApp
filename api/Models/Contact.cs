@@ -4,6 +4,9 @@ using api.Utils;
 
 namespace api.Models
 {
+    /// <summary>
+    /// Represents a contact.
+    /// </summary>
     public class Contact
     {
         [Required]

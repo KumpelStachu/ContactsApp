@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api.Models
 {
+    /// <summary>
+    /// Represents the response to an authentication request.
+    /// </summary>
     public class AuthResponse
     {
         [Required]

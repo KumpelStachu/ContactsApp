@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api.Models
 {
+    /// <summary>
+    /// Represents a paginated list of items.
+    /// </summary>
     public class PaginatedList<T>(IEnumerable<T> items, int pageIndex, int totalPages)
     {
         [Required]

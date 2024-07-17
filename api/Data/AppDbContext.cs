@@ -26,21 +26,6 @@ namespace api.Data
                new ContactCategory { Id = 2, Name = "szef", Type = CategoryType.WORK },
                new ContactCategory { Id = 3, Name = "klient", Type = CategoryType.WORK }
             );
-
-            // modelBuilder.Entity<Contact>().HasData(
-            //     new Contact
-            //     {
-            //         Id = 1,
-            //         FirstName = "Jan",
-            //         LastName = "Kowalski",
-            //         Email = "stanislaw@gmail.com",
-            //         Phone = "+48 123 456 789",
-            //         BirthDate = new DateOnly(1990, 1, 1),
-            //         Category = new ContactCategory { Id = 3, Name = "personal", Type = CategoryType.PERSONAL },
-            //         Password = "password",
-            //     }
-            // );
-
         }
     }
 }

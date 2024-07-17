@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api.Models
 {
+    /// <summary>
+    /// Represents a contact.
+    /// </summary>
     public class ContactDTO
     {
         [Required]
