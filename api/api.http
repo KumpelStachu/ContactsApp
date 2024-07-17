@@ -1,0 +1,106 @@
+@api_HostAddress = http://localhost:5254
+@api_Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImphbkBrb3dhbHNraS5wbCIsInN1YiI6ImphbkBrb3dhbHNraS5wbCIsImVtYWlsIjoiamFuQGtvd2Fsc2tpLnBsIiwibmJmIjoxNzIxMTI0MzQ5LCJleHAiOjE3MjEyMTA3NDksImlhdCI6MTcyMTEyNDM0OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MjU0IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MjU0In0.tudebHRzH1KN60-SeXeNL0zt2FbaFXypithmiEMEQvs
+
+GET {{api_HostAddress}}/contactCategory
+Accept: application/json
+
+###
+
+GET {{api_HostAddress}}/contactCategory/search?name=fryzjer
+Accept: application/json
+
+###
+
+GET {{api_HostAddress}}/contact
+Accept: application/json
+
+###
+
+GET {{api_HostAddress}}/contact/4
+Accept: application/json
+
+###
+
+DELETE {{api_HostAddress}}/contact/4
+Accept: application/json
+Authorization: Bearer {{api_Token}}
+
+###
+
+POST {{api_HostAddress}}/contact
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{api_Token}}
+
+{
+  "firstName": "Joanna",
+  "lastName": "Kowalska",
+  "email": "joanna2@kowalska.pl",
+  "phone": "123456789",
+  "birthDate": "2004-07-14T11:08:35.584Z",
+  "category": {
+    "name": "fryzjerka",
+    "type": "OTHER"
+  }
+}
+
+###
+
+PUT {{api_HostAddress}}/contact/4
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{api_Token}}
+
+{
+  "id": 4,
+  "firstName": "Janina",
+  "lastName": "Kowalska",
+  "email": "janina4@kowalska.pl",
+  "phone": "987654321",
+  "birthDate": "2004-07-14T11:08:35.584Z",
+  "category": {
+    "name": "fryzjerka",
+    "type": "OTHER"
+  }
+}
+
+###
+
+GET {{api_HostAddress}}/contact/check?email=jan@kowalski.pl
+Accept: application/json
+
+###
+
+GET {{api_HostAddress}}/auth/me
+Accept: application/json
+Authorization: Bearer {{api_Token}}
+
+###
+
+POST {{api_HostAddress}}/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "jan@kowalski.pl",
+  "password": "P@ssw0rd"
+}
+
+###
+
+POST {{api_HostAddress}}/auth/register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "jan@kowalski.pl",
+  "password": "P@ssw0rd",
+  "firstName": "Jan",
+  "lastName": "Kowalski",
+  "phone": "123456789",
+  "birthDate": "2004-07-14T11:08:35.584Z",
+  "category": {
+    "name": "fryzjer",
+    "type": "OTHER"
+  }
+}
