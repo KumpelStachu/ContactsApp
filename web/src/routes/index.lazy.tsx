@@ -4,7 +4,7 @@ import TableSkeleton from '@/components/TableSkeleton'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const Route = createLazyFileRoute('/')({
 	component: function Index() {
@@ -13,6 +13,11 @@ export const Route = createLazyFileRoute('/')({
 		const { data, error, isLoading, isFetching } = useGetQuery('/Contact', {
 			params: { query: { pageIndex } },
 		})
+
+		useEffect(() => {
+			if (isFetching) return
+			setPageIndex(page => Math.min(Math.max(page, 1), data?.totalPages ?? 1))
+		}, [data, isFetching])
 
 		if (error) {
 			return <div>Error: {error.message}</div>

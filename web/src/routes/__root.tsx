@@ -9,7 +9,7 @@ export const Route = createRootRoute({
 			<div className="container mx-auto my-4">
 				<Outlet />
 			</div>
-			<TanStackRouterDevtools />
+			{process.env.NODE_ENV === 'development' && <TanStackRouterDevtools />}
 		</>
 	),
 })

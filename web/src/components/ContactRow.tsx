@@ -64,7 +64,7 @@ export default function ContactRow({ contact }: { contact: Schema<'ContactDTO'> 
 								mutateDelete(
 									{ params: { path: { id: contact.id } } },
 									{
-										onSuccess: () => void queryClient.invalidateQueries({ queryKey: ['/Contact'] }),
+										onSettled: () => void queryClient.invalidateQueries({ queryKey: ['/Contact'] }),
 									}
 								)
 							}
@@ -86,6 +86,7 @@ export default function ContactRow({ contact }: { contact: Schema<'ContactDTO'> 
 			{canModify && (
 				<Modal isOpen={showEditor} onClose={() => setShowEditor(false)} title="Edytuj kontakt">
 					<ContactEditor
+						hideEmail
 						initialContact={contact}
 						error={errorEdit}
 						onCancel={() => setShowEditor(false)}
@@ -93,7 +94,7 @@ export default function ContactRow({ contact }: { contact: Schema<'ContactDTO'> 
 							mutateEdit(
 								{ params: { path: { id: contact.id } }, body: contact },
 								{
-									onSuccess: () => {
+									onSettled: () => {
 										void queryClient
 											.invalidateQueries({ queryKey: ['/Contact'] })
 											.then(() => setShowEditor(false))

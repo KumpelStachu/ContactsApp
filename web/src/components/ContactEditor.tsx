@@ -4,6 +4,8 @@ import { CakeIcon, MailIcon, PhoneIcon } from 'lucide-react'
 import Select from './Select'
 import { useState } from 'react'
 import { useGetQuery } from '@/api/hooks'
+import useController from '@/hooks/useController'
+import useDebounced from './useDebounced'
 
 type CategoryType = Schema<'ContactCategory'>['type']
 
@@ -27,10 +29,17 @@ export default function ContactEditor<
 	onSave: (contact: Schema<ContactSchema>) => void
 	onCancel?: () => void
 }) {
+	const email = useController(initialContact?.email)
+	const debouncedEmail = useDebounced(email.value, 500)
 	const [categoryType, setCategoryType] = useState<CategoryType>(
 		initialContact?.category.type ?? 'PERSONAL'
 	)
-	const { data, isLoading } = useGetQuery('/ContactCategory/search', {
+	const { data: checkData, isLoading: isLoadingCheck } = useGetQuery(
+		'/Contact/check',
+		{ params: { query: { email: debouncedEmail } } },
+		{ enabled: !!debouncedEmail && !hideEmail, retry: false }
+	)
+	const { data: categories, isLoading } = useGetQuery('/ContactCategory/search', {
 		params: { query: { type: categoryType } },
 	})
 
@@ -39,15 +48,18 @@ export default function ContactEditor<
 		label: translateCategoryType(type),
 	}))
 
+	const canSubmit =
+		!isLoading && !isLoadingCheck && !disabled && (!checkData?.registered || hideEmail)
+
 	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault()
-		if (isLoading || disabled) return
+		if (!canSubmit) return
 		const formData = new FormData(e.currentTarget)
 		const contact: Schema<ContactSchema> = {
 			id: initialContact?.id ?? -1,
 			firstName: formData.get('firstName') as string,
 			lastName: formData.get('lastName') as string,
-			email: formData.get('email') as string,
+			email: hideEmail ? initialContact?.email ?? '' : (formData.get('email') as string),
 			phone: formData.get('phone') as string,
 			birthDate: formData.get('birthdate') as string,
 			category: {
@@ -81,8 +93,9 @@ export default function ContactEditor<
 					name="email"
 					type="email"
 					icon={MailIcon}
-					defaultValue={initialContact?.email}
+					className={checkData?.registered ? 'input-error' : ''}
 					required
+					{...email.props}
 				/>
 			)}
 			<TextInput
@@ -112,7 +125,7 @@ export default function ContactEditor<
 				/>
 				{categoryType === 'WORK' ? (
 					<Select
-						data={data?.items.map(({ name }) => ({ label: name, value: name })) ?? []}
+						data={categories?.items.map(({ name }) => ({ label: name, value: name })) ?? []}
 						defaultValue={initialContact?.category.name}
 						label="Kategoria"
 						name="categoryName"
@@ -128,15 +141,20 @@ export default function ContactEditor<
 					/>
 				) : null}
 			</div>
-			<div className="flex justify-end gap-4 mt-4">
-				{onCancel && (
-					<button className="btn" disabled={disabled} type="button" onClick={onCancel}>
-						Anuluj
+			<div className="flex items-center justify-between gap-4 mt-4">
+				<div className="text-error">
+					{!hideEmail && debouncedEmail && checkData?.registered && 'Email jest już zajęty'}
+				</div>
+				<div className="space-x-4">
+					{onCancel && (
+						<button className="btn" disabled={disabled} type="button" onClick={onCancel}>
+							Anuluj
+						</button>
+					)}
+					<button className="btn btn-primary" disabled={!canSubmit} type="submit">
+						Zapisz
 					</button>
-				)}
-				<button className="btn btn-primary" disabled={isLoading || disabled} type="submit">
-					Zapisz
-				</button>
+				</div>
 			</div>
 		</form>
 	)
